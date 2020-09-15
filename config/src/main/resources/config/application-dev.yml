@@ -1,0 +1,41 @@
+spring:
+  jpa:
+    show-sql: false
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    generate-ddl: true
+    properties:
+      hibernate:
+        default_schema: permod1
+        jdbc:
+          lob:
+            non_contextual_creation: true
+      hbm2ddl:
+        auto: update
+  database:
+    driverClassName: "org.postgresql.Driver"
+  datasource:
+    platform: postgres
+    url: jdbc:postgresql://localhost:5432/permod1?currentSchema=permod1
+    username: postgres
+    password: postgres
+    hikari:
+       maximumPoolSize: 2
+       connectionTimeout: 60000
+       idleTimeout: 600000
+       maxLifetime: 1800000
+  hibernate:
+    hbm2ddl: update
+  cloud:
+    refresh:
+      refreshable: none
+
+security:
+  oauth2:
+    resource:
+      userInfoUri: http://localhost:2222/auth/user
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'

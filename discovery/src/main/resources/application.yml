@@ -1,0 +1,13 @@
+server:
+    port: 8761
+    max-http-header-size: 10000000
+
+eureka:
+  client:
+    registerWithEureka: false
+    fetchRegistry: false
+  server:
+    waitTimeInMsWhenSyncEmpty: 0
+    enable-self-preservation: false
+  serviceUrl:
+    defaultZone: http://localhost:8761

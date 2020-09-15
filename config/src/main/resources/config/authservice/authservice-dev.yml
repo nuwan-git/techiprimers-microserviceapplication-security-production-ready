@@ -1,0 +1,45 @@
+server:
+  port: 2222
+  max-http-header-size: 10000000
+
+management:
+  security:
+    enabled: false
+
+auth-server:
+  url: http://localhost:2222
+
+spring:
+  application:
+    name: authservice
+  jpa:
+    properties:
+      hibernate:
+        default_schema: permod1
+  main:
+    allow-bean-definition-overriding: true
+
+eureka:
+  client:
+    healthcheck:
+      enabled: true
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+  server:
+    wait-time-in-ms-when-sync-empty: 3000
+
+zuul:
+  ignored-headers: Access-Control-Allow-Credentials, Access-Control-Allow-Origin
+  sensitiveHeaders: Cookie,Set-Cookie
+  host:
+    connection-request-timeout-millis: 120000
+
+ribbon:
+  ConnectTimeout: 1200000
+  ReadTimeout: 12000000
+
+security:
+  oauth2:
+    resource:
+      userInfoUri: http://localhost:2222/auth/user
+

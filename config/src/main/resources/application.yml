@@ -1,0 +1,11 @@
+server:
+  port: 8888
+  max-http-header-size: 10000000
+spring:
+  profiles:
+    active: native
+  cloud:
+     config:
+       server:
+           native:
+              searchLocations: classpath:config/,classpath:config/{application}

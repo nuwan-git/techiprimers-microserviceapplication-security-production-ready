@@ -1,0 +1,36 @@
+spring:
+  application:
+    name: gatewayservice
+  cloud:
+    config:
+      enabled: true
+      uri: http://localhost:8888
+
+server:
+  port: 5555
+  max-http-header-size: 10000000
+
+eureka:
+  client:
+    healthcheck:
+      enabled: true
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+  server:
+    wait-time-in-ms-when-sync-empty: 3000
+
+zuul:
+  ignored-headers: Access-Control-Allow-Credentials, Access-Control-Allow-Origin
+  sensitiveHeaders: Cookie,Set-Cookie
+  host:
+    connection-request-timeout-millis: 120000
+    socket-timeout-millis: 600000
+  routes:
+    authservice:
+      url: http://localhost:2222
+
+
+ribbon:
+  ConnectTimeout: 120000
+  ReadTimeout: 120000
+
