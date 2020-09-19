@@ -19,8 +19,8 @@ public class RoleFeaturePermission  extends  SharedModel implements Serializable
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ROLE_FEATURE_PERMISSION_G1")
-    @SequenceGenerator(name = "ROLE_G1", sequenceName = "role_seq")
-    @Column(name = "role_id")
+    @SequenceGenerator(name = "ROLE_FEATURE_PERMISSION_G1", sequenceName = "role_feature_permission_seq")
+    @Column(name = "role_feature_permission_id")
     private Integer roleFeaturePermissionId;
 
     @Basic

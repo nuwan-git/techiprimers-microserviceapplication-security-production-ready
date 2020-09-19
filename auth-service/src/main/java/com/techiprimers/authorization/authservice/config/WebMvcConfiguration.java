@@ -4,6 +4,7 @@
  **/
 package com.techiprimers.authorization.authservice.config;
 
+import com.techiprimers.authorization.authservice.config.CustomPrincipal;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.MethodParameter;
@@ -31,15 +32,15 @@ public class WebMvcConfiguration  implements WebMvcConfigurer {
 
         return new HandlerMethodArgumentResolver() {
             @Override
-            public boolean supportsParameter(MethodParameter paramenter) {
-                return paramenter.getParameterType().equals(CustomPrincipal.class);
+            public boolean supportsParameter(MethodParameter parameter) {
+                return parameter.getParameterType().equals(CustomPrincipal.class);
             }
 
             @Override
-            public Object resolveArgument(MethodParameter methodParameter,
-                                          ModelAndViewContainer modelAndViewContainer,
-                                          NativeWebRequest nativeWebRequest,
-                                          WebDataBinderFactory webDataBinderFactory) throws Exception {
+            public Object resolveArgument(MethodParameter parameter,
+                                          ModelAndViewContainer mavContainer,
+                                          NativeWebRequest webRequest,
+                                          WebDataBinderFactory binderFactory) throws Exception {
                 try {
                     return (CustomPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
                 } catch (Exception e) {

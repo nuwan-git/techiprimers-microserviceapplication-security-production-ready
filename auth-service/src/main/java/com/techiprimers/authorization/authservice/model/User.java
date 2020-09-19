@@ -4,19 +4,22 @@
  **/
 package com.techiprimers.authorization.authservice.model;
 
-import org.codehaus.jackson.SerializableString;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import java.beans.Transient;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
+@NamedEntityGraphs(value = {
+        @NamedEntityGraph(name = "User.company", attributeNodes = {
+                @NamedAttributeNode("company")
+        }),
+})
 @Entity
 @EntityListeners(AuditingEntityListener.class)
 @Table(name = "user")
