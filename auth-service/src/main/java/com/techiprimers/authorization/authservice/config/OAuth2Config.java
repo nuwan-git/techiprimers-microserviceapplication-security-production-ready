@@ -20,6 +20,7 @@ import org.springframework.security.oauth2.config.annotation.configurers.ClientD
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
+import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
 import org.springframework.security.oauth2.provider.*;
 import org.springframework.security.oauth2.provider.endpoint.TokenEndpointAuthenticationFilter;
 import org.springframework.security.oauth2.provider.request.DefaultOAuth2RequestFactory;
@@ -71,8 +72,14 @@ public class OAuth2Config extends AuthorizationServerConfigurerAdapter {
         clients.jdbc(dataSource).passwordEncoder(passwordEncoder);
     }
 
+    @Bean
     public TokenEndpointAuthenticationFilter tokenEndpointAuthenticationFilter() {
         return new TokenEndpointAuthenticationFilter(authenticationManager,requestFactory());
+    }
+
+    @Override
+    public void configure(AuthorizationServerSecurityConfigurer oauthServer) throws Exception {
+        oauthServer.tokenKeyAccess("permitAll()").checkTokenAccess("isAuthenticated()");
     }
 
     @Override
@@ -82,14 +89,15 @@ public class OAuth2Config extends AuthorizationServerConfigurerAdapter {
         endpoints.requestFactory(requestFactory());
     }
 
-    private JwtAccessTokenConverter jwtAccessTokenConverter() {
+    @Bean
+    public JwtAccessTokenConverter jwtAccessTokenConverter() {
 
         JwtAccessTokenConverter converter = new CustomTokenEnhancer();
         converter.setSigningKey("password");
         return converter;
     }
 
-    private class CustomTokenEnhancer extends JwtAccessTokenConverter {
+    class CustomTokenEnhancer extends JwtAccessTokenConverter {
 
         @Override
         public OAuth2AccessToken enhance(OAuth2AccessToken accessToken, OAuth2Authentication authentication) {
@@ -102,7 +110,7 @@ public class OAuth2Config extends AuthorizationServerConfigurerAdapter {
             info.put("username", user.getUsername());
             info.put("companyProfileSeq", user.getCompanyId());
             info.put("contactNumber", user.getContactNo());
-            info.put("role", user.getRole().getRoleName());
+            //info.put("role", user.getRole().getRoleName());
             info.put("createdDate", user.getCreatedDate());
             DefaultOAuth2AccessToken customAccessToken = new DefaultOAuth2AccessToken(accessToken);
             customAccessToken.setAdditionalInformation(info);
