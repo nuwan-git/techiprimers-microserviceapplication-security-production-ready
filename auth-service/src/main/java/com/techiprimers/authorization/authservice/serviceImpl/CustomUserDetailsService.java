@@ -7,6 +7,7 @@ package com.techiprimers.authorization.authservice.serviceImpl;
 import com.techiprimers.authorization.authservice.model.User;
 import com.techiprimers.authorization.authservice.repository.UserRepository;
 import com.techiprimers.authorization.authservice.service.FeaturePermissionService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.authentication.AccountStatusUserDetailsChecker;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -27,6 +28,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     private final UserRepository userRepository;
     private final FeaturePermissionService featurePermissionService;
 
+    @Autowired
     public CustomUserDetailsService(UserRepository userRepository,  FeaturePermissionService featurePermissionService) {
         this.userRepository = userRepository;
         this.featurePermissionService = featurePermissionService;
@@ -48,7 +50,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         new AccountStatusUserDetailsChecker().check(user.get());
         user.get().setCompanyId(user.get().getUserId());
         user.get().setAuthorities(this.getAuthorities(user.get().getUserId()));
-        //user.get().setRole(user.get().getRole());
+        user.get().setRole(user.get().getRole());
         return user.get();
     }
 
@@ -57,7 +59,12 @@ public class CustomUserDetailsService implements UserDetailsService {
     public Set<GrantedAuthority> getAuthorities(Integer userId) {
         Set<GrantedAuthority> authorities = new HashSet<>();
         Set<String> urls = featurePermissionService.getAuthorities(userId);
-        authorities.add(new SimpleGrantedAuthority("ROLE_TECHIPRIMERS_ADMIN"));
+//        authorities.add(new SimpleGrantedAuthority("ROLE_TECHIPRIMERS_ADMIN"));
+        for(String url : urls) {
+            authorities.add(new SimpleGrantedAuthority(url));
+        }
+
+
         return  authorities;
 
     }
