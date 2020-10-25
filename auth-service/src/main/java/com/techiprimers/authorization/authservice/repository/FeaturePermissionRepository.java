@@ -17,10 +17,10 @@ import java.util.Set;
 @Repository
 public interface FeaturePermissionRepository extends JpaRepository <FeaturePermission,Integer>  {
 
-    @Query(value = "select result1.* from (select fp.feature_permission_url from permod.role_feature_permission rfp\n" +
-            "INNER JOIN permod.feature_permission fp ON\n" +
+    @Query(value = "select result1.* from (select fp.feature_permission_url from permod1.role_feature_permission rfp\n" +
+            "INNER JOIN permod1.feature_permission fp ON\n" +
             "rfp.feature_permission_id = fp.feature_permission_id\n" +
-            "INNER JOIN permod.feature f\n" +
+            "INNER JOIN permod1.feature f\n" +
             "ON f.feature_id = fp.feature_id\n" +
             "where rfp.role_id = :roleId) AS result1", nativeQuery = true)
     Set<String> findAllthePermissionIdsForRole(@Param("roleId") Integer roleId);

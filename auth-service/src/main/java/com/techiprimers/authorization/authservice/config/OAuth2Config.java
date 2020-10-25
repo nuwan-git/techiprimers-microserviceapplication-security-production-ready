@@ -105,7 +105,7 @@ public class OAuth2Config extends AuthorizationServerConfigurerAdapter {
             info.put("username", user.getUsername());
             info.put("companyProfileSeq", user.getCompanyId());
             info.put("contactNumber", user.getContactNo());
-            //info.put("role", user.getRole().getRoleName());
+            info.put("role", user.getRole().getRoleName());
             info.put("createdDate", user.getCreatedDate());
             DefaultOAuth2AccessToken customAccessToken = new DefaultOAuth2AccessToken(accessToken);
             customAccessToken.setAdditionalInformation(info);
